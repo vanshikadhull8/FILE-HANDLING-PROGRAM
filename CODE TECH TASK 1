@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+// FIRST TASK OF CODETECH IT SOLUTION INTERSHIP
+int main() {
+    FILE *fp;
+    char filename[100], ch; // string for storing filename
+    int choice;
+    char data[1000]; //string data info.
+
+    printf("Enter the filename: ");
+    scanf("%s", filename);//taking input from user as filename
+
+    do {  //using do-while loop for multiple operation / repetation
+        printf("\n== File Operation Menu ==\n");
+        printf("1. Create and Write to File\n");
+        printf("2. Read from File\n");
+        printf("3. Append to File\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");//enter the choice of your operation as mentioned
+        scanf("%d", &choice);
+        getchar();  // clear newline character left by scanf
+
+        switch(choice) {
+            case 1:
+                fp = fopen(filename, "w");  // create or WRITING ON FILE
+                if (fp == NULL) {// if at fp address non file is available
+                    printf("Error\n");
+                    exit(1);
+                }
+                printf("Enter text to write (end with ~ ON new line):\n");
+                while (fgets(data, sizeof(data), stdin)) {// taking input from keyboard
+                    if (data[0] == '~') break;
+                    fputs(data, fp);// putting data to the file at fp
+                }
+                fclose(fp);
+                printf("Data written successfully.\n");
+                break;
+
+            case 2:
+                fp = fopen(filename, "r");  // read mode FORM FILE
+                if (fp == NULL) {
+                    printf("Error\n");
+                    exit(1);
+                }
+                printf("Contents of file:\n");
+                while ((ch = fgetc(fp)) != EOF) {
+                    putchar(ch);
+                }
+                fclose(fp);
+                break;
+
+            case 3:
+                fp = fopen(filename, "a");  // append mode CHANGES IN FILE 
+                if (fp == NULL) {
+                    printf("Error:\n");
+                    exit(1);
+                }
+                printf("Enter text to append (end with ~ ):\n");
+                while (fgets(data, sizeof(data), stdin)) {
+                    if (data[0] == '~') break;
+                    fputs(data, fp);
+                }
+                fclose(fp);
+                printf("Data appended successfully.\n");//data changes successfully
+                break;
+
+            case 4:
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid \n");// none of the case matches 
+        }
+
+    } while(choice != 4); // loop stop working at 4 condition is false 
+
+    return 0;
+}
